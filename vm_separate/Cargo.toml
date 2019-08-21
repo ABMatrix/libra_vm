@@ -1,0 +1,73 @@
+[package]
+    name = "vm_separate"
+    version = "0.1.0"
+    authors = ["fishvd"]
+    edition = "2018"
+
+    # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+    chrono = "0.4.7"
+    failure = "0.1.3"
+
+    vm_genesis = { path = "./language/vm/vm_genesis" }
+    types = { path = "./types"}
+    vm_runtime = { path = "./language/vm/vm_runtime" }
+    config = { path = "./config" }
+    nextgen_crypto = { path = "./crypto/nextgen_crypto" }
+    state_view = { path = "./storage/state_view" }
+
+[workspace]
+members = [
+    "common/bounded-executor",
+    "common/canonical_serialization",
+    "common/crash_handler",
+    "common/debug_interface",
+    "common/executable_helpers",
+    "common/failure_ext",
+    "common/futures-semaphore",
+    "common/grpcio-client",
+    "common/jemalloc",
+    "common/logger",
+    "common/metrics",
+    "common/proptest_helpers",
+    "common/proto_conv",
+    "config",
+    "config/config_builder",
+    "config/generate_keypair",
+    "crypto/legacy_crypto",
+    "crypto/nextgen_crypto",
+    "crypto/secret_service",
+    "language/benchmarks",
+    "language/bytecode_verifier",
+    "language/bytecode_verifier/invalid_mutations",
+    "language/bytecode_verifier/bytecode_verifier_tests",
+    "language/functional_tests",
+    "language/transaction_builder",
+    "language/compiler",
+    "language/compiler/ir_to_bytecode",
+    "language/compiler/ir_to_bytecode/syntax",
+    "language/e2e_tests",
+    "language/tools/cost_synthesis",
+    "language/tools/test_generation",
+    "language/tools/repl",
+    "language/stackless_bytecode/bytecode_to_boogie",
+    "language/stackless_bytecode/generator",
+    "language/vm",
+    "language/vm/serializer_tests",
+    "language/vm/vm_runtime",
+    "language/vm/vm_runtime/vm_cache_map",
+    "language/vm/vm_runtime/vm_runtime_types",
+    "language/vm/vm_genesis",
+    "storage/accumulator",
+    "storage/libradb",
+    "storage/jellyfish_merkle",
+    "storage/schemadb",
+    "storage/scratchpad",
+    "storage/sparse_merkle",
+    "storage/storage_client",
+    "storage/state_view",
+    "storage/storage_proto",
+    "storage/storage_service",
+    "types",
+]
