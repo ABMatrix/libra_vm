@@ -14,13 +14,13 @@ use types::{
     vm_error::{ExecutionStatus, VMStatus},
 };
 
+
 #[test]
 fn single_peer_to_peer_with_event() {
     ::logger::try_init_for_testing();
     // create a FakeExecutor with a genesis from file
-    let mut executor = FakeExecutor::from_genesis_file();
 
-    // create and publish a sender with 1_000_000 coins and a receiver with 100_000 coins
+    // create and publilet mut executor = FakeExecutor::from_genesis_file();sh a sender with 1_000_000 coins and a receiver with 100_000 coins
     let sender = AccountData::new(1_000_000, 10);
     let receiver = AccountData::new(100_000, 10);
     executor.add_account_data(&sender);

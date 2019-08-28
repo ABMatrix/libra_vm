@@ -520,8 +520,8 @@ where
     /// Returns the account state blob (if applicable) and the corresponding merkle proof.
     pub fn get_with_proof(
         &self,
-        key: HashValue,
-        root_hash: HashValue,
+        key: HashValue,             //hash(accountAddress)
+        root_hash: HashValue,       //root_hash
     ) -> Result<(Option<AccountStateBlob>, SparseMerkleProof)> {
         // Empty tree just returns proof with no sibling hash.
         if root_hash == *SPARSE_MERKLE_PLACEHOLDER_HASH {
@@ -536,6 +536,7 @@ where
         // in the tree structure.
         for _i in 0..ROOT_NIBBLE_HEIGHT {
             match self.reader.get_node(next_hash)? {
+                //分支节点
                 Node::Branch(branch_node) => {
                     let queried_child_index = match nibble_iter.next() {
                         Some(nibble) => nibble,
@@ -550,6 +551,7 @@ where
                         None => return Ok((None, SparseMerkleProof::new(None, siblings))),
                     };
                 }
+                //扩展节点
                 Node::Extension(extension_node) => {
                     let (mut siblings_in_extension, needs_early_return) =
                         extension_node.get_siblings(&mut nibble_iter);
@@ -559,6 +561,7 @@ where
                     }
                     next_hash = extension_node.child();
                 }
+                //叶节点
                 Node::Leaf(leaf_node) => {
                     return Ok((
                         if leaf_node.key() == key {

@@ -231,13 +231,15 @@ impl DB {
     /// Reads single record by key.
     pub fn get<S: Schema>(&self, schema_key: &S::Key) -> Result<Option<S::Value>> {
         let k = <S::Key as KeyCodec<S>>::encode_key(&schema_key)?;
+        //这里key就是那个hash(address),然后这里的key是其vec化
         let cf_handle = self.get_cf_handle(S::COLUMN_FAMILY_NAME)?;
-
+        //这是获取列名的handle
         self.inner
             .get_cf(cf_handle, &k)
             .map_err(convert_rocksdb_err)?
             .map(|raw_value| <S::Value as ValueCodec<S>>::decode_value(&raw_value))
             .transpose()
+        //返回的应该是个Node类型
     }
 
     /// Writes single record.

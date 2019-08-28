@@ -30,6 +30,7 @@ lazy_static! {
 ///
 /// Tests will typically create a set of `Account` instances to run transactions on. This type
 /// encodes the logic to operate on and verify operations on any Libra account.
+//账户里面存储的只有地址/私钥/公钥
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Account {
     addr: AccountAddress,
@@ -95,12 +96,14 @@ impl Account {
     ///
     /// Use this to retrieve or publish the Account blob.
     // TODO: plug in the account type
+    //创建accessPath，具体怎么创建的我还得再看看，因为我看到的是用了tag,我觉得很奇怪
     pub fn make_access_path(&self) -> AccessPath {
         // TODO: we need a way to get the type (StructDef) of the Account in place
         create_access_path(&self.addr, account_config::account_struct_tag())
     }
 
     /// Changes the keys for this account to the provided ones.
+    //一个账户对应的密钥对是可以更改的
     pub fn rotate_key(&mut self, privkey: Ed25519PrivateKey, pubkey: Ed25519PublicKey) {
         self.privkey = privkey;
         self.pubkey = pubkey;
@@ -109,6 +112,7 @@ impl Account {
     /// Computes the authentication key for this account, as stored on the chain.
     ///
     /// This is the same as the account's address if the keys have never been rotated.
+    //计算公钥地址，如果账户的密钥对没有rotate的话，那么该值就应该是accountAddress
     pub fn auth_key(&self) -> AccountAddress {
         AccountAddress::from_public_key(&self.pubkey)
     }
@@ -203,6 +207,7 @@ impl Account {
     }
 
     /// Given a blob, materializes the VM Value behind it.
+    //?????????
     pub(crate) fn read_account_resource(blob: &[u8], account_type: StructDef) -> Option<Value> {
         match Value::simple_deserialize(blob, account_type) {
             Ok(account) => Some(account),
